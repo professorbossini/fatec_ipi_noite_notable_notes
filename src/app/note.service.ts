@@ -1,4 +1,13 @@
+import {AngularFireDatabase} from 'angularfire2/database'
+import { Injectable } from '@angular/core';
+
+
+@Injectable()
 export class NoteService{
+
+    constructor (private db: AngularFireDatabase){
+
+    }
     notes = [
         {
             id: '1',
@@ -22,12 +31,39 @@ export class NoteService{
     ];
 
     removeNote (note){
-        let index = this.notes.indexOf(note);
-        if (index > -1){
-            this.notes.splice(index, 1);
-        }
+        this.db.object("/notes/" + note.$key)
+        .remove()
+        .then( ()=> {
+            console.log("Apagou")
+        })
+        .catch( (error) =>{
+            console.log ("Falhou", error);
+            alert ("Falhou");
+        })
+
+        // let index = this.notes.indexOf(note);
+        // if (index > -1){
+        //     this.notes.splice(index, 1);
+        // }
     }
     addNote (note){
-        this.notes.push(note);
+        //this.notes.push(note);
+        this.db.list("/notes/").push({
+            title: note.title,
+            content: note.content,
+            date: note.date
+        });
+    }
+
+    fetchNotes (){
+        return this.db.list("/notes/");
+    }
+
+    editNote (note){
+        this.db.object ("/notes/" + note.$key).update({
+            title: note.title,
+            content: note.content,
+            date: note.date
+        });
     }
 }

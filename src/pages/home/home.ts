@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
 import { NoteService } from '../../app/note.service'
+import { AngularFireDatabase } from 'angularfire2/database';
 
 
 @Component({
@@ -12,8 +13,11 @@ export class HomePage {
 
   notes;
 
-  constructor(public navCtrl: NavController, private noteService : NoteService) {
-    this.notes = this.noteService.notes;
+  constructor(public navCtrl: NavController,
+       private noteService : NoteService,
+          private db: AngularFireDatabase) {
+    //console.log (db);
+    //this.notes = this.noteService.notes;
   }
 
   onItemClick(note){
@@ -25,6 +29,10 @@ export class HomePage {
 
   onAddClick (){
     this.navCtrl.push ('DetailPage');
+  }
+
+  ngOnInit (){
+    this.notes = this.noteService.fetchNotes();
   }
 
 }

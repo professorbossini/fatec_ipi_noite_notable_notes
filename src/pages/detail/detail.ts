@@ -18,6 +18,7 @@ export class DetailPage {
 
   note;
   newNoteFlag = false;
+  deleteNoteFlag = false;
   constructor(public navCtrl: NavController,
            public navParams: NavParams,
             private noteService: NoteService,
@@ -46,6 +47,7 @@ export class DetailPage {
           text: "Confirm",
           handler: () =>{
             this.noteService.removeNote(this.note);
+            this.deleteNoteFlag = true;
             this.navCtrl.pop();
           }
         }
@@ -59,10 +61,16 @@ export class DetailPage {
   }
 
   ionViewWillLeave(){
-    if (this.newNoteFlag)
+    if (this.newNoteFlag){
       if (this.note.date != ""
-        && this.note.title != "" && this.note.content != "")
+        && this.note.title != "" && this.note.content != ""){
           this.noteService.addNote(this.note);
+        }        
+    }
+    else if (!this.deleteNoteFlag){
+      this.noteService.editNote(this.note);
+    }
+      
   }
 
 }
