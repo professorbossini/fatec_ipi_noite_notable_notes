@@ -10,6 +10,8 @@ import { NoteService } from './note.service';
 
 import {AngularFireModule} from 'angularfire2'
 import {AngularFireDatabaseModule, AngularFireDatabase} from 'angularfire2/database'
+import {AngularFireAuthModule} from 'angularfire2/auth'
+import {AuthService} from './auth.service';
 
 export const firebaseConfig = {
   apiKey: "AIzaSyD3z_Igs8thxTScGPxGYsPR6hdhXm4Gke8",
@@ -31,7 +33,8 @@ export const firebaseConfig = {
     BrowserModule,
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    AngularFireAuthModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -42,6 +45,7 @@ export const firebaseConfig = {
     StatusBar,
     SplashScreen,
     NoteService,
+    AuthService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
